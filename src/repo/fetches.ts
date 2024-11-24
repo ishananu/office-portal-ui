@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { BASE_URL } from '../config/const';
+import { IPagination } from '../app/type';
 
 // Base Axios instance
 const apiClient = axios.create({
@@ -25,6 +26,7 @@ apiClient.interceptors.request.use(
 // Generic GET request
 export const get = async <T>(
   url: string,
+  pagination: IPagination = { limit: 10, skip: 1 },
   config?: AxiosRequestConfig
 ): Promise<T> => {
   const response = await apiClient.get<T>(url, config);

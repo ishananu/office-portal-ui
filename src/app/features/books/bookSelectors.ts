@@ -1,4 +1,4 @@
-import { RootState } from '../../store';
+import { RootState } from '../../store/redux-store';
 
 export const selectBooks = (state: RootState) => state.books.books;
 export const selectBooksLoading = (state: RootState) => state.books.loading;

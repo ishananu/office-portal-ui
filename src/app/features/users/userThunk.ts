@@ -1,11 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { setUsers } from './userSlice';
+import { getEmployeeList } from '../../../dalc/users';
 
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
-  async (_, { dispatch }) => {
-    const response = await axios.get('/api/users');
+  async (page: number, { dispatch }) => {
+    const response = await getEmployeeList(page);
     dispatch(setUsers(response.data));
   }
 );

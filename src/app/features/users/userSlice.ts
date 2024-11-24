@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import { IUser } from '../../type';
 
 interface UsersState {
-  list: User[];
+  list: IUser[];
 }
 
 const initialState: UsersState = {
@@ -18,10 +13,10 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    setUsers(state, action: PayloadAction<User[]>) {
-      state.list = action.payload;
+    setUsers(state, action: PayloadAction<IUser[]>) {
+      state.list = [...state.list, ...action.payload];
     },
-    addUser(state, action: PayloadAction<User>) {
+    addUser(state, action: PayloadAction<IUser>) {
       state.list.push(action.payload);
     },
     removeUser(state, action: PayloadAction<string>) {
