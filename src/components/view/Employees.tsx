@@ -1,14 +1,16 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MainContent } from '../layout/MainContent';
 import { AppDispatch, RootState } from '../../app/store/redux-store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  deletetUser,
   editUser,
   fetchUsers,
   postUser
 } from '../../app/features/users/userThunk';
 import { IUser } from '../../app/type';
 import AddUserModal from '../shared/AddEmployee';
+import DeleteModal from '../shared/ConfirmationModal';
 
 export const Employees = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -18,7 +20,7 @@ export const Employees = () => {
   const [editingUserId, setEditingUserId] = useState<string>('');
   const [editValues, setEditValues] = useState({ name: '', email: '' });
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = (): void => setModalOpen(true);
@@ -26,12 +28,16 @@ export const Employees = () => {
 
   const handleSaveUser = (userData: Partial<IUser>): void => {
     dispatch(postUser(userData));
-    console.log('User saved:', userData);
   };
 
   const handleEditClick = (user: IUser) => {
     setEditingUserId(user._id);
     setEditValues({ name: user.name, email: user.email });
+  };
+
+  const handleDeleteClick = (user: IUser) => {
+    setEditingUserId(user._id);
+    setIsDeleteModalOpen(true);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +80,18 @@ export const Employees = () => {
     }).format(date);
   };
 
+  const handleModalClose = () => {
+    setIsDeleteModalOpen(false);
+    setEditingUserId('');
+  };
+
+  const handleConfirmDelete = () => {
+    if (editingUserId) {
+      dispatch(deletetUser(editingUserId)); // Call your Redux action or API
+    }
+    setIsDeleteModalOpen(false);
+  };
+
   useEffect(() => {
     if (users.length === 0) {
       dispatch(fetchUsers(currentPage));
@@ -87,13 +105,19 @@ export const Employees = () => {
           onClick={handleOpenModal}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm"
         >
-          Add User
+          Add Employee
         </button>
 
         <AddUserModal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onSave={handleSaveUser}
+        />
+
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleModalClose}
+          onConfirm={handleConfirmDelete}
         />
       </div>
       <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
@@ -213,6 +237,16 @@ export const Employees = () => {
                       className="block text-sm font-semibold text-slate-800"
                     >
                       Edit
+                    </a>
+                  )}
+
+                  {editingUserId !== person._id && (
+                    <a
+                      href="#"
+                      onClick={() => handleDeleteClick(person)}
+                      className="block text-sm font-semibold text-slate-800"
+                    >
+                      Delete
                     </a>
                   )}
                 </td>

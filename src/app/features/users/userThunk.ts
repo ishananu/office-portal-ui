@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setUsers, updateUser, addUser } from './userSlice';
+import { setUsers, updateUser, addUser, removeUser } from './userSlice';
 import {
   getEmployeeList,
   updateEmployee,
-  addEmployee
+  addEmployee,
+  deleteEmployee
 } from '../../../dalc/users';
 import { IUser } from '../../type';
 
@@ -28,5 +29,13 @@ export const postUser = createAsyncThunk(
   async (userData: Partial<IUser>, { dispatch }) => {
     const response = await addEmployee(userData);
     dispatch(addUser(response.data));
+  }
+);
+
+export const deletetUser = createAsyncThunk(
+  'users/deletetUser',
+  async (userId: string, { dispatch }) => {
+    await deleteEmployee(userId);
+    dispatch(removeUser(userId));
   }
 );

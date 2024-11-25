@@ -32,3 +32,12 @@ export function addEmployee(
     ''
   );
 }
+
+export function deleteEmployee(userId: string): Promise<IResponse<IUser>> {
+  // const local = localizationStore.currentLocal.actions;
+  return errorStore.wrap(
+    () => usersRepo.deleteEmp(userId), // this need be change with proper handling, need to pass from the signup page
+    'local.error.title',
+    ''
+  );
+}
