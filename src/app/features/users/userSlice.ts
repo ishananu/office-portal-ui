@@ -20,10 +20,18 @@ const usersSlice = createSlice({
       state.list.push(action.payload);
     },
     removeUser(state, action: PayloadAction<string>) {
-      state.list = state.list.filter((user) => user.id !== action.payload);
+      state.list = state.list.filter((user) => user._id !== action.payload);
+    },
+    updateUser(state, action: PayloadAction<IUser>) {
+      const index = state.list.findIndex(
+        (user) => user._id === action.payload._id
+      );
+      if (index !== -1) {
+        state.list[index] = { ...state.list[index], ...action.payload };
+      }
     }
   }
 });
 
-export const { setUsers, addUser, removeUser } = usersSlice.actions;
+export const { setUsers, addUser, removeUser, updateUser } = usersSlice.actions;
 export default usersSlice.reducer;

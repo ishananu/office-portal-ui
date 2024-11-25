@@ -1,7 +1,7 @@
 import ROUTES from '../app/routes';
 import { IResponse, IUser } from '../app/type';
 import { DEFAULT_ROW_COUNT } from '../config/const';
-import { get } from './fetches';
+import { get, post, put } from './fetches';
 
 export async function getEmpList(
   pageNumber: number
@@ -10,4 +10,14 @@ export async function getEmpList(
     skip: pageNumber,
     limit: DEFAULT_ROW_COUNT
   });
+}
+
+export async function putEmp(data: Partial<IUser>): Promise<IResponse<IUser>> {
+  const { _id, ...body } = data;
+  return await put<IResponse<IUser>>(`${ROUTES.EMPLOYEES}/${_id}`, body);
+}
+
+export async function postEmp(data: Partial<IUser>): Promise<IResponse<IUser>> {
+  const { _id, ...body } = data;
+  return await post<IResponse<IUser>>(ROUTES.EMPLOYEES, body);
 }
