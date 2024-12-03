@@ -12,11 +12,15 @@ import {
 } from './routes/user/router';
 import { Library } from './components/view/Library';
 import { Products } from './components/view/Products';
+import { isTokenValid } from './config/helpers';
 
 const checkAuth = (): boolean => {
-  // const token = document.cookie.split("; ").find(row => row.startsWith("authToken="));
-  // return Boolean(token);
-  return false;
+  const token = document.cookie
+    .split('; ')
+    .find((row) => row.startsWith('jwt='))
+    ?.split('=')[1];
+  if (!token) return false;
+  return isTokenValid(token);
 };
 
 const rootLoader = () => {
