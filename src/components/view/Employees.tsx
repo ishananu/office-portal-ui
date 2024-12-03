@@ -27,13 +27,6 @@ export const Employees = () => {
 
   const handleOpenModal = (): void => {
     setModalOpen(true);
-    dispatch(
-      addToast({
-        type: 'success',
-        message: 'Operation was successful!',
-        duration: 3000
-      })
-    );
   };
   const handleCloseModal = (): void => setModalOpen(false);
 
@@ -98,7 +91,7 @@ export const Employees = () => {
 
   const handleConfirmDelete = () => {
     if (editingUserId) {
-      dispatch(deletetUser(editingUserId)); // Call your Redux action or API
+      dispatch(deletetUser(editingUserId));
     }
     setIsDeleteModalOpen(false);
   };
