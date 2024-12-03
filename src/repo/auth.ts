@@ -3,13 +3,17 @@ import { ILogin, IResponse, IUser } from '../app/type';
 import { post } from './fetches';
 
 export async function userLogin(
-  username: string,
-  password: string
+  email: string,
+  pass: string
 ): Promise<IResponse<ILogin>> {
   return await post<IResponse<ILogin>>(`${ROUTES.AUTH}/login`, {
-    username,
-    password
+    email,
+    pass
   });
+}
+
+export async function userLogOut(): Promise<IResponse<ILogin>> {
+  return await post<IResponse<ILogin>>(`${ROUTES.AUTH}/logout`, {});
 }
 
 export async function userSignup(

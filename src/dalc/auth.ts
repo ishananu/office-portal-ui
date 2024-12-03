@@ -3,15 +3,20 @@ import { ILogin, IResponse, IUser } from '../app/type';
 import { authRepo } from '../repo';
 
 export function userLogin(
-  username: string,
+  email: string,
   password: string
 ): Promise<IResponse<ILogin>> {
   // const local = localizationStore.currentLocal.actions;
   return errorStore.wrap(
-    () => authRepo.userLogin(username, password),
+    () => authRepo.userLogin(email, password),
     'local.error.title',
     ''
   );
+}
+
+export function userLogOut(): Promise<IResponse<ILogin>> {
+  // const local = localizationStore.currentLocal.actions;
+  return errorStore.wrap(() => authRepo.userLogOut(), 'local.error.title', '');
 }
 
 export function userRegister(

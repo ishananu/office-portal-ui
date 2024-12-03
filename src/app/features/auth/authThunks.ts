@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { loginStart, loginSuccess, loginFailure, logout } from './authSlice';
+import { userLogin, userLogOut } from '../../../dalc/auth';
 
 // Async thunk for login
 export const loginUser = createAsyncThunk(
@@ -8,11 +8,9 @@ export const loginUser = createAsyncThunk(
   async (credentials: { email: string; password: string }, { dispatch }) => {
     try {
       dispatch(loginStart());
-      const response = await axios.post('/api/login', credentials);
-      const { user, token } = response.data;
-
-      dispatch(loginSuccess({ user, token }));
-      return { user, token };
+      const response = await userLogin(credentials.email, credentials.password);
+      dispatch(loginSuccess(response.data));
+      return response.data;
     } catch (error: any) {
       dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
       throw error;
@@ -25,7 +23,7 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, { dispatch }) => {
     try {
-      await axios.post('/api/logout');
+      await userLogOut();
       dispatch(logout());
     } catch (error: any) {
       console.error('Logout failed:', error.message);

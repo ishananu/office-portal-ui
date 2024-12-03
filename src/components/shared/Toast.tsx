@@ -12,7 +12,6 @@ import { AppDispatch, RootState } from '../../app/store/redux-store';
 const Toast: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const toasts = useSelector((state: RootState) => state.toast.toasts);
-  console.log('Current toasts:', toasts); // Debugging output
 
   const getIcon = (type: 'success' | 'danger' | 'warning') => {
     switch (type) {

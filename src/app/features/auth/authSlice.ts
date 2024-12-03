@@ -1,15 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ILogin, IUser } from '../../type';
 
 interface AuthState {
-  user: string | null; // The username or user ID
-  token: string | null; // JWT or session token
-  loading: boolean; // Indicates whether an authentication request is in progress
-  error: string | null; // Stores error messages
+  user: ILogin;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
-  user: null,
-  token: null,
+  user: { token: '', name: '', id: '' },
   loading: false,
   error: null
 };
@@ -22,12 +21,8 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loginSuccess(
-      state,
-      action: PayloadAction<{ user: string; token: string }>
-    ) {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+    loginSuccess(state, action: PayloadAction<ILogin>) {
+      state.user = action.payload;
       state.loading = false;
     },
     loginFailure(state, action: PayloadAction<string>) {
@@ -35,8 +30,7 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     logout(state) {
-      state.user = null;
-      state.token = null;
+      state.user = { token: '', name: '', id: '' };
       state.error = null;
     }
   }

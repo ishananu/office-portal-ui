@@ -7,7 +7,11 @@ export interface IUser {
   createdAt?: string;
 }
 
-export interface ILogin extends Omit<IUser, 'password' | 'createdAt'> {}
+export interface ILogin {
+  token: string;
+  name: string;
+  id: string;
+}
 
 export interface IPagination {
   limit: number;
