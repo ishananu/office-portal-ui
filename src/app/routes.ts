@@ -1,5 +1,6 @@
 const ROUTES = {
-  EMPLOYEES: 'employees'
+  EMPLOYEES: 'employees',
+  AUTH: 'auth'
 };
 
 export default ROUTES;

@@ -16,7 +16,7 @@ import { Products } from './components/view/Products';
 const checkAuth = (): boolean => {
   // const token = document.cookie.split("; ").find(row => row.startsWith("authToken="));
   // return Boolean(token);
-  return true;
+  return false;
 };
 
 const rootLoader = () => {
