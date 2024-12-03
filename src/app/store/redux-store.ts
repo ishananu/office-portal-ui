@@ -3,13 +3,15 @@ import authReducer from '../features/auth/authSlice';
 import usersReducer from '../features/users/userSlice';
 import productsReducer from '../features/products/productSlice';
 import booksReducer from '../features/books/bookSlice';
+import toastReducer from '../features/toast/toastSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     users: usersReducer,
     products: productsReducer,
-    books: booksReducer
+    books: booksReducer,
+    toast: toastReducer
   }
 });
 

@@ -7,6 +7,7 @@ import {
   deleteEmployee
 } from '../../../dalc/users';
 import { IUser } from '../../type';
+import { addToast } from '../toast/toastSlice';
 
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
@@ -29,6 +30,13 @@ export const postUser = createAsyncThunk(
   async (userData: Partial<IUser>, { dispatch }) => {
     const response = await addEmployee(userData);
     dispatch(addUser(response.data));
+    dispatch(
+      addToast({
+        type: 'success',
+        message: 'Operation was successful!',
+        duration: 3000
+      })
+    );
   }
 );
 

@@ -10,7 +10,9 @@ import {
 } from '../../app/features/users/userThunk';
 import { IUser } from '../../app/type';
 import AddUserModal from '../shared/AddEmployee';
-import DeleteModal from '../shared/ConfirmationModal';
+import ActionModal from '../shared/ActionModal';
+import ActionButtons from '../shared/ActionButtons';
+import { addToast } from '../../app/features/toast/toastSlice';
 
 export const Employees = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -23,7 +25,16 @@ export const Employees = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = (): void => setModalOpen(true);
+  const handleOpenModal = (): void => {
+    setModalOpen(true);
+    dispatch(
+      addToast({
+        type: 'success',
+        message: 'Operation was successful!',
+        duration: 3000
+      })
+    );
+  };
   const handleCloseModal = (): void => setModalOpen(false);
 
   const handleSaveUser = (userData: Partial<IUser>): void => {
@@ -114,10 +125,14 @@ export const Employees = () => {
           onSave={handleSaveUser}
         />
 
-        <DeleteModal
+        <ActionModal
           isOpen={isDeleteModalOpen}
-          onClose={handleModalClose}
+          errorType="delete"
+          message="Are you sure you want to delete this? This action cannot be undone."
+          showActions={true}
           onConfirm={handleConfirmDelete}
+          onCancel={handleModalClose}
+          onClose={handleModalClose}
         />
       </div>
       <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
@@ -145,14 +160,24 @@ export const Employees = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((person) => (
+            {users.map((person, i) => (
               <tr className="hover:bg-slate-50" key={`p-${person.email}`}>
                 <td className="p-4 border-b border-slate-200 flex">
-                  <img
-                    className="size-10 rounded-full"
-                    src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074"
-                    alt=""
-                  />
+                  <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                    <svg
+                      className="absolute w-12 h-12 text-gray-400 -left-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+
                   <div className="ml-3">
                     {editingUserId === person._id ? (
                       <>
@@ -209,46 +234,19 @@ export const Employees = () => {
                 </td>
 
                 <td className="p-4 border-b border-slate-200">
-                  {editingUserId === person._id ? (
-                    <>
-                      <button
-                        onClick={() => handleSaveClick(person._id)}
-                        className={`block text-sm font-semibold mr-2 ${
-                          errors.name || errors.email
-                            ? 'text-slate-500'
-                            : 'text-green-500'
-                        }`}
-                        disabled={Boolean(errors.name || errors.email)}
-                      >
-                        Save
-                      </button>
-
-                      <button
-                        onClick={handleCancelClick}
-                        className="block text-sm font-semibold text-red-500"
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <a
-                      href="#"
-                      onClick={() => handleEditClick(person)}
-                      className="block text-sm font-semibold text-slate-800"
-                    >
-                      Edit
-                    </a>
-                  )}
-
-                  {editingUserId !== person._id && (
-                    <a
-                      href="#"
-                      onClick={() => handleDeleteClick(person)}
-                      className="block text-sm font-semibold text-slate-800"
-                    >
-                      Delete
-                    </a>
-                  )}
+                  <ActionButtons
+                    person={person}
+                    editingUserId={editingUserId}
+                    errors={{
+                      email: !!errors['email'],
+                      name: !!errors['name']
+                    }}
+                    key={`person-${i}`}
+                    handleSaveClick={() => handleSaveClick(person._id)}
+                    handleCancelClick={handleCancelClick}
+                    handleDeleteClick={() => handleDeleteClick(person)}
+                    handleEditClick={() => handleEditClick(person)}
+                  />
                 </td>
               </tr>
             ))}
