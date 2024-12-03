@@ -1,10 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { loginStart, loginSuccess, loginFailure, logout } from './authSlice';
 import { userLogin, userLogOut } from '../../../dalc/auth';
-import { useNavigate } from 'react-router-dom';
+// import { redirect } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-// const navigate = useNavigate();
 // Async thunk for login
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -14,8 +13,7 @@ export const loginUser = createAsyncThunk(
       const response = await userLogin(credentials.email, credentials.password);
       dispatch(loginSuccess(response.data));
       Cookies.set('jwt', response.data.token, { expires: 7, path: '/' });
-      // navigate('/dashboard');
-      window.location.href = '/dashboard';
+      // redirect('/dashboard');
     } catch (error: any) {
       dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
       throw error;

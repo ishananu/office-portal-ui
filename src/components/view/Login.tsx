@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthLoading } from '../../app/features/auth/authSelectors';
 import { loginUser } from '../../app/features/auth/authThunks';
 import { RootState } from '../../app/store/redux-store';
+import { useNavigate } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 type Props = {};
 
@@ -14,7 +16,8 @@ export const Login: React.FC<Props> = () => {
   );
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => selectAuthLoading(state));
-
+  // const history = useHistory()
+  const navigate = useNavigate();
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {};
     if (!email) errors.email = 'Email is required.';
@@ -31,7 +34,8 @@ export const Login: React.FC<Props> = () => {
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
-    dispatch(loginUser({ email, password }) as any);
+    await dispatch(loginUser({ email, password }) as any);
+    navigate('/dashboard');
   };
 
   return (
@@ -152,7 +156,7 @@ export const Login: React.FC<Props> = () => {
             href="#"
             className="font-semibold text-indigo-600 hover:text-indigo-500"
           >
-            Start a 14 day free trial
+            Create a account
           </a>
         </p>
       </div>
