@@ -4,7 +4,6 @@ import { selectAuthLoading } from '../../app/features/auth/authSelectors';
 import { loginUser } from '../../app/features/auth/authThunks';
 import { RootState } from '../../app/store/redux-store';
 import { useNavigate } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
 
 type Props = {};
 
@@ -87,7 +86,7 @@ export const Login: React.FC<Props> = () => {
               </label>
               <div className="text-sm">
                 <a
-                  href="#"
+                  href="/"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot password?
@@ -153,7 +152,7 @@ export const Login: React.FC<Props> = () => {
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Not a member?{' '}
           <a
-            href="#"
+            href="/"
             className="font-semibold text-indigo-600 hover:text-indigo-500"
           >
             Create a account

@@ -13,7 +13,6 @@ import {
 import { Library } from './components/view/Library';
 import { Products } from './components/view/Products';
 import { isTokenValid } from './config/helpers';
-import Cookies from 'js-cookie';
 
 const checkAuth = (): boolean => {
   const token = localStorage.getItem('token');

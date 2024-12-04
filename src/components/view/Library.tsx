@@ -22,7 +22,7 @@ export const Library = (props: Props) => {
               tincidunt. Sit quisque est metus auctor sed turpis lectus quis.
             </p>
             <a
-              href="#"
+              href="/"
               className="inline-block items-center rounded-md bg-black px-8 py-4 text-center font-semibold text-white"
             >
               Back Home

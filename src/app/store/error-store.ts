@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { addToast } from '../features/toast/toastSlice';
 import { EResponseCode } from '../type';
 import { AppDispatch, store } from './redux-store';
@@ -30,6 +31,19 @@ const errorStore = {
             type: 'danger',
             message:
               (e as any)?.response.data.message || 'Something went wrong!',
+            duration: 5000
+          })
+        );
+      } else {
+        (store.dispatch as AppDispatch)(
+          addToast({
+            type: 'warning',
+            message:
+              (e as any)?.response.data.message ||
+              ((e as any)?.response.data?.errors as string[])?.map(
+                (er) => er
+              ) ||
+              'Something went wrong!',
             duration: 5000
           })
         );

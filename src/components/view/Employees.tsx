@@ -12,13 +12,12 @@ import { IUser } from '../../app/type';
 import AddUserModal from '../shared/AddEmployee';
 import ActionModal from '../shared/ActionModal';
 import ActionButtons from '../shared/ActionButtons';
-import { addToast } from '../../app/features/toast/toastSlice';
 
 export const Employees = () => {
   const dispatch: AppDispatch = useDispatch();
   const users = useSelector((state: RootState) => state.users.list);
 
-  const [currentPage, currentPagecurrentPage] = useState<number>(1);
+  const [currentPage, _currentPagecurrentPage] = useState<number>(1);
   const [editingUserId, setEditingUserId] = useState<string>('');
   const [editValues, setEditValues] = useState({ name: '', email: '' });
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
@@ -30,8 +29,9 @@ export const Employees = () => {
   };
   const handleCloseModal = (): void => setModalOpen(false);
 
-  const handleSaveUser = (userData: Partial<IUser>): void => {
-    dispatch(postUser(userData));
+  const handleSaveUser = async (userData: Partial<IUser>): Promise<void> => {
+    await dispatch(postUser(userData));
+    setModalOpen(false);
   };
 
   const handleEditClick = (user: IUser) => {

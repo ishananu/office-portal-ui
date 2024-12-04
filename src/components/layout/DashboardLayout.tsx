@@ -9,19 +9,21 @@ import {
   MenuItem,
   MenuItems
 } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { MainNavigation } from '../shared/MainNavigation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getRefreshToken,
   logoutUser
 } from '../../app/features/auth/authThunks';
+import { RootState } from '../../app/store/redux-store';
+import { selectUser } from '../../app/features/users/userSelectors';
 
 type Props = {};
 
 const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
+  name: '',
+  email: '',
   imageUrl:
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 };
@@ -35,14 +37,18 @@ export const DashboardLayout = (props: Props) => {
     navigate('/dashboard');
   };
 
+  const userData = useSelector((state: RootState) => selectUser(state));
+  user['email'] = userData.email ?? '';
+  user['name'] = userData.name;
+
   const userNavigation = [
-    { name: 'Sign out', onclick: () => handleUserLogout() },
     {
-      name: 'TEST REfresh token',
+      name: 'Test Refresh token',
       onclick: async () => {
         await dispatch(getRefreshToken() as any);
       }
-    }
+    },
+    { name: 'Sign out', onclick: () => handleUserLogout() }
   ];
 
   return (
@@ -67,13 +73,13 @@ export const DashboardLayout = (props: Props) => {
               </div>
               <div className="hidden md:block">
                 <div className="ml-4 flex items-center md:ml-6">
+                  <p className="text-gray-300">{userData.name}</p>
                   <button
                     type="button"
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">View notifications</span>
-                    <BellIcon aria-hidden="true" className="size-6" />
                   </button>
 
                   {/* Profile dropdown */}
@@ -152,7 +158,7 @@ export const DashboardLayout = (props: Props) => {
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
-                  <BellIcon aria-hidden="true" className="size-6" />
+                  {/* <BellIcon aria-hidden="true" className="size-6" /> */}
                 </button>
               </div>
               <div className="mt-3 space-y-1 px-2">

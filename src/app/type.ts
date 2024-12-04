@@ -12,6 +12,7 @@ export interface ILogin {
   name: string;
   id: string;
   refreshToken: string;
+  email?: string;
 }
 
 export interface IPagination {
