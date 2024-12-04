@@ -16,8 +16,8 @@ export const Login: React.FC<Props> = () => {
   );
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => selectAuthLoading(state));
-  // const history = useHistory()
   const navigate = useNavigate();
+
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {};
     if (!email) errors.email = 'Email is required.';

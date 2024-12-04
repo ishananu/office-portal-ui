@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
   Disclosure,
   DisclosureButton,
@@ -11,6 +11,11 @@ import {
 } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { MainNavigation } from '../shared/MainNavigation';
+import { useDispatch } from 'react-redux';
+import {
+  getRefreshToken,
+  logoutUser
+} from '../../app/features/auth/authThunks';
 
 type Props = {};
 
@@ -21,13 +26,25 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 };
 
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' }
-];
-
 export const DashboardLayout = (props: Props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleUserLogout = async () => {
+    await dispatch(logoutUser() as any);
+    navigate('/dashboard');
+  };
+
+  const userNavigation = [
+    { name: 'Sign out', onclick: () => handleUserLogout() },
+    {
+      name: 'TEST REfresh token',
+      onclick: async () => {
+        await dispatch(getRefreshToken() as any);
+      }
+    }
+  ];
+
   return (
     <>
       <div className="min-h-full">
@@ -78,12 +95,12 @@ export const DashboardLayout = (props: Props) => {
                     >
                       {userNavigation.map((item) => (
                         <MenuItem key={item.name}>
-                          <a
-                            href={item.href}
+                          <p
                             className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                            onClick={item.onclick}
                           >
                             {item.name}
-                          </a>
+                          </p>
                         </MenuItem>
                       ))}
                     </MenuItems>
@@ -143,7 +160,7 @@ export const DashboardLayout = (props: Props) => {
                   <DisclosureButton
                     key={item.name}
                     as="a"
-                    href={item.href}
+                    onClick={item.onclick}
                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                   >
                     {item.name}

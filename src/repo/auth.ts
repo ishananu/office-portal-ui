@@ -30,8 +30,8 @@ export async function validateToken(
   });
 }
 
-export async function refreshToken(token: string): Promise<IResponse<boolean>> {
-  return await post<IResponse<boolean>>(`${ROUTES.AUTH}/refresh`, {
+export async function refreshToken(token: string): Promise<IResponse<ILogin>> {
+  return await post<IResponse<ILogin>>(`${ROUTES.AUTH}/refresh`, {
     token
   });
 }

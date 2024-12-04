@@ -39,7 +39,7 @@ export function validateToken(token: string): Promise<IResponse<boolean>> {
   );
 }
 
-export function refreshToken(token: string): Promise<IResponse<boolean>> {
+export function refreshToken(token: string): Promise<IResponse<ILogin>> {
   // const local = localizationStore.currentLocal.actions;
   return errorStore.wrap(
     () => authRepo.refreshToken(token),

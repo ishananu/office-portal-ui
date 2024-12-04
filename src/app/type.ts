@@ -11,6 +11,7 @@ export interface ILogin {
   token: string;
   name: string;
   id: string;
+  refreshToken: string;
 }
 
 export interface IPagination {
@@ -21,4 +22,13 @@ export interface IPagination {
 export interface IResponse<T> {
   success: boolean;
   data: T;
+}
+
+export enum EResponseCode {
+  'UNAUTHORIZED' = 401,
+  'SUCCESS' = 200,
+  'ERROR' = 500,
+  'FORBIDDEN' = 403,
+  'TOKEN_EXPIRED' = 402,
+  'BAD_REQUEST' = 400
 }

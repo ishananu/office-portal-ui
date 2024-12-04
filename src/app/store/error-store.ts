@@ -1,4 +1,5 @@
 import { addToast } from '../features/toast/toastSlice';
+import { EResponseCode } from '../type';
 import { AppDispatch, store } from './redux-store';
 
 type ErrorDetails = {
@@ -23,13 +24,17 @@ const errorStore = {
     try {
       return await inner();
     } catch (e) {
-      (store.dispatch as AppDispatch)(
-        addToast({
-          type: 'danger',
-          message: 'Something went wrong!',
-          duration: 5000
-        })
-      );
+      if ((e as any)?.status === EResponseCode.ERROR) {
+        (store.dispatch as AppDispatch)(
+          addToast({
+            type: 'danger',
+            message:
+              (e as any)?.response.data.message || 'Something went wrong!',
+            duration: 5000
+          })
+        );
+      }
+
       reportError({
         title: errorTitle,
         text: errorMsg,

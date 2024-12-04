@@ -5,7 +5,7 @@ import {
   GetLibraryRoute,
   GetProductsRoute
 } from '../../routes/user/router';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { DisclosureButton } from '@headlessui/react';
 
 type Props = {
@@ -26,6 +26,7 @@ const classNames = (...classes: string[]): string => {
 export const MainNavigation = (props: Props) => {
   const location = useLocation();
   const { pathname } = location;
+  const navigate = useNavigate();
   return (
     <>
       {navigation.map((item) => {
@@ -46,8 +47,9 @@ export const MainNavigation = (props: Props) => {
         ) : (
           <DisclosureButton
             key={item.name}
-            as="a"
-            href={item.href}
+            // as="a"
+            // href={item.href}
+            onClick={() => navigate(item.href)}
             aria-current={pathname === item.href ? 'page' : undefined}
             className={classNames(
               pathname === item.href

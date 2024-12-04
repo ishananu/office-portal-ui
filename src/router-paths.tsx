@@ -13,12 +13,10 @@ import {
 import { Library } from './components/view/Library';
 import { Products } from './components/view/Products';
 import { isTokenValid } from './config/helpers';
+import Cookies from 'js-cookie';
 
 const checkAuth = (): boolean => {
-  const token = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith('jwt='))
-    ?.split('=')[1];
+  const token = localStorage.getItem('token');
   if (!token) return false;
   return isTokenValid(token);
 };

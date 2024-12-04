@@ -8,7 +8,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: { token: '', name: '', id: '' },
+  user: { token: '', name: '', id: '', refreshToken: '' },
   loading: false,
   error: null
 };
@@ -30,7 +30,7 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     logout(state) {
-      state.user = { token: '', name: '', id: '' };
+      state.user = { token: '', name: '', id: '', refreshToken: '' };
       state.error = null;
     }
   }

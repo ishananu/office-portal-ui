@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { loginStart, loginSuccess, loginFailure, logout } from './authSlice';
-import { userLogin, userLogOut } from '../../../dalc/auth';
-// import { redirect } from 'react-router-dom';
+import { userLogin, userLogOut, refreshToken } from '../../../dalc/auth';
 import Cookies from 'js-cookie';
 
 // Async thunk for login
@@ -12,8 +11,11 @@ export const loginUser = createAsyncThunk(
       dispatch(loginStart());
       const response = await userLogin(credentials.email, credentials.password);
       dispatch(loginSuccess(response.data));
-      Cookies.set('jwt', response.data.token, { expires: 7, path: '/' });
-      // redirect('/dashboard');
+      localStorage.setItem('token', response.data.token);
+      Cookies.set('refresh', response.data.refreshToken, {
+        expires: 7,
+        path: '/'
+      });
     } catch (error: any) {
       dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
       throw error;
@@ -27,9 +29,23 @@ export const logoutUser = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       await userLogOut();
+      localStorage.removeItem('token');
       dispatch(logout());
     } catch (error: any) {
       console.error('Logout failed:', error.message);
+    }
+  }
+);
+
+export const getRefreshToken = createAsyncThunk(
+  'auth/refreshToken',
+  async (_, { dispatch }) => {
+    try {
+      const rt = Cookies.get('refresh');
+      const response = await refreshToken(rt!);
+      localStorage.setItem('token', response.data.token);
+    } catch (error: any) {
+      console.error('Refresh Token request failed:', error.message);
     }
   }
 );
