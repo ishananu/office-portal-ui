@@ -5,6 +5,7 @@ export interface IUser {
   role?: string;
   password?: string;
   createdAt?: string;
+  img?: string;
 }
 
 export interface ILogin {

@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { IUser } from '../../app/type';
+import UserIconHolder from './UserIconHolder';
 
 interface AddUserModalProps {
   isOpen: boolean;
@@ -78,6 +79,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
               name="name"
               value={formData.name}
               onChange={handleInputChange}
+              placeholder="Type user name here"
               className={`mt-1 block w-full px-3 py-2 border ${
                 errors.name ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
@@ -98,6 +100,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
               type="email"
               id="email"
               name="email"
+              placeholder="Type email here"
               value={formData.email}
               onChange={handleInputChange}
               className={`mt-1 block w-full px-3 py-2 border ${
@@ -109,6 +112,19 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
             )}
           </div>
 
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              User Icon
+            </label>
+            <UserIconHolder
+              onSelect={(img) => {
+                setFormData((prev) => ({ ...prev, img }));
+              }}
+            />
+          </div>
           <div className="flex justify-end space-x-2">
             <button
               type="button"

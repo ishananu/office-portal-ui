@@ -128,7 +128,7 @@ export const Employees = () => {
           onClose={handleModalClose}
         />
       </div>
-      <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+      <div className="relative flex flex-col w-full h-full overflow-auto text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
         <table className="w-full text-left table-auto min-w-max">
           <thead>
             <tr>
@@ -157,18 +157,25 @@ export const Employees = () => {
               <tr className="hover:bg-slate-50" key={`p-${person.email}`}>
                 <td className="p-4 border-b border-slate-200 flex">
                   <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                    <svg
-                      className="absolute w-12 h-12 text-gray-400 -left-1"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
+                    {person.img ? (
+                      <img
+                        src={`/assets/${person.img}.png`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <svg
+                        className="absolute w-12 h-12 text-gray-400 -left-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    )}
                   </div>
 
                   <div className="ml-3">

@@ -27,7 +27,7 @@ export function addEmployee(
 ): Promise<IResponse<IUser>> {
   // const local = localizationStore.currentLocal.actions;
   return errorStore.wrap(
-    () => usersRepo.postEmp({ ...userData, password: 'securepassword' }), // this need be change with proper handling, need to pass from the signup page
+    () => usersRepo.postEmp(userData), // this need be change with proper handling, need to pass from the signup page
     'local.error.title',
     ''
   );
