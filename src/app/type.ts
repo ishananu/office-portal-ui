@@ -14,6 +14,7 @@ export interface ILogin {
   id: string;
   refreshToken: string;
   email?: string;
+  img: string;
 }
 
 export interface IPagination {
@@ -25,6 +26,16 @@ export interface IResponse<T> {
   success: boolean;
   data: T;
 }
+
+interface IPaginativeQuery<T> {
+  data: T;
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+export interface IPaginativeResponse<T>
+  extends IResponse<IPaginativeQuery<T>> {}
 
 export enum EResponseCode {
   'UNAUTHORIZED' = 401,

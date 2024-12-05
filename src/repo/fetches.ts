@@ -29,7 +29,10 @@ export const get = async <T>(
   pagination: IPagination = { limit: 10, skip: 1 },
   config?: AxiosRequestConfig
 ): Promise<T> => {
-  const response = await apiClient.get<T>(url, config);
+  const response = await apiClient.get<T>(
+    `${url}?p=${pagination.skip}&s=${pagination.limit}`,
+    config
+  );
   return response.data;
 };
 

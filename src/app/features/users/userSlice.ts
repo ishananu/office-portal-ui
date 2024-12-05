@@ -3,16 +3,21 @@ import { IUser } from '../../type';
 
 interface UsersState {
   list: IUser[];
+  total: number;
 }
 
 const initialState: UsersState = {
-  list: []
+  list: [],
+  total: 0
 };
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    setUserTotal(state, action: PayloadAction<number>) {
+      state.total = action.payload;
+    },
     setUsers(state, action: PayloadAction<IUser[]>) {
       state.list = [...state.list, ...action.payload];
     },
@@ -33,5 +38,6 @@ const usersSlice = createSlice({
   }
 });
 
-export const { setUsers, addUser, removeUser, updateUser } = usersSlice.actions;
+export const { setUsers, addUser, removeUser, updateUser, setUserTotal } =
+  usersSlice.actions;
 export default usersSlice.reducer;

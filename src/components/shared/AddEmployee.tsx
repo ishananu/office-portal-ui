@@ -30,6 +30,11 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
     setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
+  const handleOnClose = () => {
+    setFormData({ name: '', email: '', img: '' });
+    onClose();
+  };
+
   const validateForm = (): boolean => {
     const newErrors: Partial<IUser> = {};
     if (!formData.name!.trim()) newErrors.name = 'Name is required.';
@@ -59,7 +64,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
           <h3 className="text-lg font-medium text-gray-900">Add New User</h3>
           <button
             className="text-gray-500 hover:text-gray-800"
-            onClick={onClose}
+            onClick={handleOnClose}
             aria-label="Close"
           >
             &times;
@@ -128,7 +133,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
           <div className="flex justify-end space-x-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleOnClose}
               className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
             >
               Cancel
@@ -136,11 +141,18 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
             <button
               type="submit"
               className={`px-4 py-2 rounded ${
-                errors.name || errors.email
+                errors.name ||
+                errors.email ||
+                formData.email === '' ||
+                formData.name === ''
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   : 'bg-indigo-500 text-white hover:bg-indigo-600'
               }`}
-              disabled={Boolean(errors.name || errors.email)}
+              disabled={
+                Boolean(errors.name || errors.email) ||
+                formData.email === '' ||
+                formData.name === ''
+              }
             >
               Save
             </button>

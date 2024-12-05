@@ -13,10 +13,13 @@ import AddUserModal from '../shared/AddEmployee';
 import ActionModal from '../shared/ActionModal';
 import ActionButtons from '../shared/ActionButtons';
 import TablePagination from '../shared/TablePagination';
+import { DEFAULT_ROW_COUNT } from '../../config/const';
+import { setUserTotal } from '../../app/features/users/userSlice';
 
 export const Employees = () => {
   const dispatch: AppDispatch = useDispatch();
   const users = useSelector((state: RootState) => state.users.list);
+  const usersTotal = useSelector((state: RootState) => state.users.total);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [editingUserId, setEditingUserId] = useState<string>('');
@@ -32,6 +35,7 @@ export const Employees = () => {
 
   const handleSaveUser = async (userData: Partial<IUser>): Promise<void> => {
     await dispatch(postUser(userData));
+    dispatch(setUserTotal(usersTotal + 1));
     setModalOpen(false);
   };
 
@@ -46,8 +50,10 @@ export const Employees = () => {
   };
 
   const handlePageChange = (page: number) => {
-    console.log('Page changed to:', page);
     setCurrentPage(page);
+    if (page > Math.ceil(users.length / DEFAULT_ROW_COUNT)) {
+      dispatch(fetchUsers(page));
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +104,7 @@ export const Employees = () => {
   const handleConfirmDelete = () => {
     if (editingUserId) {
       dispatch(deletetUser(editingUserId));
+      dispatch(setUserTotal(usersTotal - 1));
     }
     setIsDeleteModalOpen(false);
   };
@@ -142,9 +149,9 @@ export const Employees = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
@@ -153,7 +160,7 @@ export const Employees = () => {
               type="text"
               id="table-search"
               className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
-              placeholder="Search for items"
+              placeholder="Search for employees"
             />
           </div>
         </div>
@@ -190,113 +197,124 @@ export const Employees = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((person, i) => (
-              <tr className="hover:bg-slate-50" key={`p-${person.email}`}>
-                <td className="p-4 border-b border-slate-200 flex">
-                  <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                    {person.img ? (
-                      <img
-                        src={`/assets/${person.img}.png`}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    ) : (
-                      <svg
-                        className="absolute w-12 h-12 text-gray-400 -left-1"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    )}
-                  </div>
+            {users
+              .slice(
+                (currentPage - 1) * DEFAULT_ROW_COUNT,
+                DEFAULT_ROW_COUNT * currentPage
+              )
+              .map((person, i) => (
+                <tr className="hover:bg-slate-50" key={`p-${person.email}`}>
+                  <td className="p-4 border-b border-slate-200 flex">
+                    <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                      {person.img ? (
+                        <img
+                          src={`/assets/${person.img}.png`}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <svg
+                          className="absolute w-12 h-12 text-gray-400 -left-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      )}
+                    </div>
 
-                  <div className="ml-3">
+                    <div className="ml-3">
+                      {editingUserId === person._id ? (
+                        <>
+                          <input
+                            type="text"
+                            name="name"
+                            value={editValues.name}
+                            onChange={handleInputChange}
+                            className="text-sm font-medium text-gray-900"
+                          />
+                          {errors.name && (
+                            <p className="text-xs text-red-500">
+                              {errors.name}
+                            </p>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm font-medium text-gray-900">
+                            {person.name}
+                          </p>
+                        </>
+                      )}
+                      <p className="text-sm text-gray-500">
+                        {(person as any)._id}
+                      </p>
+                    </div>
+                  </td>
+
+                  <td className="p-4 border-b border-slate-200">
                     {editingUserId === person._id ? (
                       <>
                         <input
-                          type="text"
-                          name="name"
-                          value={editValues.name}
+                          type="email"
+                          name="email"
+                          value={editValues.email}
                           onChange={handleInputChange}
-                          className="text-sm font-medium text-gray-900"
+                          className="text-sm text-gray-500"
                         />
-                        {errors.name && (
-                          <p className="text-xs text-red-500">{errors.name}</p>
+                        {errors.email && (
+                          <p className="text-xs text-red-500">{errors.email}</p>
                         )}
                       </>
                     ) : (
                       <>
-                        <p className="text-sm font-medium text-gray-900">
-                          {person.name}
+                        <p className="block text-sm text-slate-800">
+                          {person.email}
                         </p>
                       </>
                     )}
-                    <p className="text-sm text-gray-500">
-                      {(person as any)._id}
+                  </td>
+                  <td className="p-4 border-b border-slate-200">
+                    <p className="block text-sm text-slate-800">
+                      {formatDate(person.createdAt!)}
                     </p>
-                  </div>
-                </td>
+                  </td>
 
-                <td className="p-4 border-b border-slate-200">
-                  {editingUserId === person._id ? (
-                    <>
-                      <input
-                        type="email"
-                        name="email"
-                        value={editValues.email}
-                        onChange={handleInputChange}
-                        className="text-sm text-gray-500"
-                      />
-                      {errors.email && (
-                        <p className="text-xs text-red-500">{errors.email}</p>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <p className="block text-sm text-slate-800">
-                        {person.email}
-                      </p>
-                    </>
-                  )}
-                </td>
-                <td className="p-4 border-b border-slate-200">
-                  <p className="block text-sm text-slate-800">
-                    {formatDate(person.createdAt!)}
-                  </p>
-                </td>
-
-                <td className="p-4 border-b border-slate-200">
-                  <ActionButtons
-                    person={person}
-                    editingUserId={editingUserId}
-                    errors={{
-                      email: !!errors['email'],
-                      name: !!errors['name']
-                    }}
-                    key={`person-${i}`}
-                    handleSaveClick={() => handleSaveClick(person._id)}
-                    handleCancelClick={handleCancelClick}
-                    handleDeleteClick={() => handleDeleteClick(person)}
-                    handleEditClick={() => handleEditClick(person)}
-                  />
-                </td>
-              </tr>
-            ))}
+                  <td className="p-4 border-b border-slate-200">
+                    <ActionButtons
+                      person={person}
+                      editingUserId={editingUserId}
+                      errors={{
+                        email: !!errors['email'],
+                        name: !!errors['name']
+                      }}
+                      key={`person-${i}`}
+                      handleSaveClick={() => handleSaveClick(person._id)}
+                      handleCancelClick={handleCancelClick}
+                      handleDeleteClick={() => handleDeleteClick(person)}
+                      handleEditClick={() => handleEditClick(person)}
+                    />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
 
       <TablePagination
-        totalPages={5}
+        totalPages={Math.ceil(usersTotal / DEFAULT_ROW_COUNT)}
         currentPage={currentPage}
         onPageChange={handlePageChange}
-        itemsPerPageText={`${currentPage * 10 - 9}-${currentPage * 10}`}
-        totalItems={100}
+        itemsPerPageText={`${currentPage * DEFAULT_ROW_COUNT - 9}-${
+          currentPage * DEFAULT_ROW_COUNT > usersTotal
+            ? usersTotal
+            : currentPage * DEFAULT_ROW_COUNT
+        }`}
+        totalItems={usersTotal}
       />
     </MainContent>
   );

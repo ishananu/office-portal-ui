@@ -24,8 +24,7 @@ type Props = {};
 const user = {
   name: '',
   email: '',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+  img: ''
 };
 
 export const DashboardLayout = (props: Props) => {
@@ -88,11 +87,26 @@ export const DashboardLayout = (props: Props) => {
                       <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          alt=""
-                          src={user.imageUrl}
-                          className="size-8 rounded-full"
-                        />
+
+                        {userData.img ? (
+                          <img
+                            src={`/assets/${userData.img}.png`}
+                            className="size-8 rounded-full"
+                          />
+                        ) : (
+                          <svg
+                            className="absolute w-12 h-12 text-gray-400 -left-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        )}
                       </MenuButton>
                     </div>
                     <MenuItems
@@ -138,11 +152,7 @@ export const DashboardLayout = (props: Props) => {
             <div className="border-t border-gray-700 pb-3 pt-4">
               <div className="flex items-center px-5">
                 <div className="shrink-0">
-                  <img
-                    alt=""
-                    src={user.imageUrl}
-                    className="size-10 rounded-full"
-                  />
+                  <img alt="" src={user.img} className="size-10 rounded-full" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base/5 font-medium text-white">

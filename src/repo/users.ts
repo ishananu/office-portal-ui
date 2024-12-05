@@ -1,12 +1,12 @@
 import ROUTES from '../app/routes';
-import { IResponse, IUser } from '../app/type';
+import { IPaginativeResponse, IResponse, IUser } from '../app/type';
 import { DEFAULT_ROW_COUNT } from '../config/const';
 import { get, post, put, del } from './fetches';
 
 export async function getEmpList(
   pageNumber: number
-): Promise<IResponse<IUser[]>> {
-  return await get<IResponse<IUser[]>>(ROUTES.EMPLOYEES, {
+): Promise<IPaginativeResponse<IUser[]>> {
+  return await get<IPaginativeResponse<IUser[]>>(ROUTES.EMPLOYEES, {
     skip: pageNumber,
     limit: DEFAULT_ROW_COUNT
   });

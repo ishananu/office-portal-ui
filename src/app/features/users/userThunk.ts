@@ -1,5 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setUsers, updateUser, addUser, removeUser } from './userSlice';
+import {
+  setUsers,
+  updateUser,
+  addUser,
+  removeUser,
+  setUserTotal
+} from './userSlice';
 import {
   getEmployeeList,
   updateEmployee,
@@ -13,7 +19,8 @@ export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async (page: number, { dispatch }) => {
     const response = await getEmployeeList(page);
-    dispatch(setUsers(response.data));
+    dispatch(setUsers(response.data?.data));
+    dispatch(setUserTotal(response.data.totalCount));
   }
 );
 
