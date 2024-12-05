@@ -12,12 +12,13 @@ import { IUser } from '../../app/type';
 import AddUserModal from '../shared/AddEmployee';
 import ActionModal from '../shared/ActionModal';
 import ActionButtons from '../shared/ActionButtons';
+import TablePagination from '../shared/TablePagination';
 
 export const Employees = () => {
   const dispatch: AppDispatch = useDispatch();
   const users = useSelector((state: RootState) => state.users.list);
 
-  const [currentPage, _currentPagecurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [editingUserId, setEditingUserId] = useState<string>('');
   const [editValues, setEditValues] = useState({ name: '', email: '' });
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
@@ -42,6 +43,11 @@ export const Employees = () => {
   const handleDeleteClick = (user: IUser) => {
     setEditingUserId(user._id);
     setIsDeleteModalOpen(true);
+  };
+
+  const handlePageChange = (page: number) => {
+    console.log('Page changed to:', page);
+    setCurrentPage(page);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,31 +110,62 @@ export const Employees = () => {
 
   return (
     <MainContent title="Employees">
-      <div className="flex justify-end mb-2">
+      <AddUserModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveUser}
+      />
+
+      <ActionModal
+        isOpen={isDeleteModalOpen}
+        errorType="delete"
+        message="Are you sure you want to delete this? This action cannot be undone."
+        showActions={true}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleModalClose}
+        onClose={handleModalClose}
+      />
+
+      <div className="flex justify-between">
+        <div className="pb-4 bg-white ">
+          <label htmlFor="table-search" className="sr-only">
+            Search
+          </label>
+          <div className="relative mt-1">
+            <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-500 "
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="table-search"
+              className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+              placeholder="Search for items"
+            />
+          </div>
+        </div>
         <button
           onClick={handleOpenModal}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm mb-4"
         >
           Add Employee
         </button>
-
-        <AddUserModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onSave={handleSaveUser}
-        />
-
-        <ActionModal
-          isOpen={isDeleteModalOpen}
-          errorType="delete"
-          message="Are you sure you want to delete this? This action cannot be undone."
-          showActions={true}
-          onConfirm={handleConfirmDelete}
-          onCancel={handleModalClose}
-          onClose={handleModalClose}
-        />
       </div>
-      <div className="relative flex flex-col w-full h-full overflow-auto text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+
+      <div className="relative flex flex-col w-full h-full overflow-auto text-gray-700 bg-white shadow-md  bg-clip-border">
         <table className="w-full text-left table-auto min-w-max">
           <thead>
             <tr>
@@ -253,6 +290,14 @@ export const Employees = () => {
           </tbody>
         </table>
       </div>
+
+      <TablePagination
+        totalPages={5}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        itemsPerPageText={`${currentPage * 10 - 9}-${currentPage * 10}`}
+        totalItems={100}
+      />
     </MainContent>
   );
 };
