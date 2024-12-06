@@ -13,22 +13,30 @@ import {
 import { Library } from './components/view/Library';
 import { Products } from './components/view/Products';
 import { isTokenValid } from './config/helpers';
+import { useDispatch } from 'react-redux';
+import { getRefreshToken } from './app/features/auth/authThunks';
+import { store } from './app/store/redux-store';
 
-const checkAuth = (): boolean => {
+const checkAuth = async (): Promise<boolean> => {
   const token = localStorage.getItem('token');
   if (!token) return false;
-  return isTokenValid(token);
+  if (isTokenValid(token)) {
+    await store.dispatch(getRefreshToken() as any);
+    return true;
+  } else {
+    return false;
+  }
 };
 
-const rootLoader = () => {
-  if (checkAuth()) {
+const rootLoader = async () => {
+  if (await checkAuth()) {
     throw redirect('/dashboard');
   }
   return null;
 };
 
-const protectedLoader = () => {
-  if (!checkAuth()) {
+const protectedLoader = async () => {
+  if (!(await checkAuth())) {
     throw redirect('/');
   }
   return null;

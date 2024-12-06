@@ -43,6 +43,7 @@ export const getRefreshToken = createAsyncThunk(
     try {
       const rt = Cookies.get('refresh');
       const response = await refreshToken(rt!);
+      dispatch(loginSuccess(response.data));
       localStorage.setItem('token', response.data.token);
     } catch (error: any) {
       console.error('Refresh Token request failed:', error.message);
