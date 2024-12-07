@@ -16,6 +16,19 @@ import TablePagination from '../shared/TablePagination';
 import { DEFAULT_ROW_COUNT } from '../../config/const';
 import { setUserTotal } from '../../app/features/users/userSlice';
 
+const formatDate = (dateString: string): string | undefined => {
+  if (!dateString) return;
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  }).format(date);
+};
+
 export const Employees = () => {
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
   const users = useSelector((state: RootState) => state.users.list);
@@ -81,19 +94,6 @@ export const Employees = () => {
 
   const handleCancelClick = () => {
     setEditingUserId('');
-  };
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return;
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    }).format(date);
   };
 
   const handleModalClose = () => {

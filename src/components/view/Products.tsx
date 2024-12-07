@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MainContent } from '../layout/MainContent';
 type Props = {};
 
-export const Products = (props: Props) => {
+export const Products: React.FC = (props: Props) => {
   return (
     <MainContent title="Products">
       <div className="px-5 py-16 md:px-10 md:py-20">

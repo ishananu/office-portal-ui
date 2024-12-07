@@ -1,9 +1,8 @@
-// @flow
 import * as React from 'react';
 import { MainContent } from '../layout/MainContent';
 type Props = {};
 
-export const Library = (props: Props) => {
+export const Library: React.FC = (props: Props) => {
   return (
     <MainContent title="Library">
       <section>
