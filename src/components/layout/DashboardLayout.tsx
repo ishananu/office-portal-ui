@@ -65,12 +65,15 @@ export const DashboardLayout: FC<Props> = () => {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
-                <div className="shrink-0">
+                <div className="shrink-0 flex text-center justify-center items-center">
                   <img
-                    alt="Your Company"
-                    src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+                    alt="Office portal"
+                    src="/assets/office-portal-logo.png"
                     className="size-8"
                   />
+                  <p className="text-center text-1xl/9 font-bold tracking-tight text-gray-500 ml-2">
+                    OFFICE PORTAL
+                  </p>
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
