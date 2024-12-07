@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { FC, useMemo } from 'react';
+import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
 import {
   Disclosure,
   DisclosureButton,
@@ -16,39 +16,47 @@ import {
   getRefreshToken,
   logoutUser
 } from '../../app/features/auth/authThunks';
-import { RootState } from '../../app/store/redux-store';
+import { AppDispatch, RootState } from '../../app/store/redux-store';
 import { selectUser } from '../../app/features/users/userSelectors';
+import { IUser } from '../../app/type';
 
-type Props = {};
+interface Props {}
 
-const user = {
-  name: '',
-  email: '',
-  img: ''
-};
+interface IUserNavigationItem {
+  name: string;
+  onclick: () => Promise<void>;
+}
 
-export const DashboardLayout = (props: Props) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+export const DashboardLayout: FC<Props> = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate: NavigateFunction = useNavigate();
+
+  const userData = useSelector((state: RootState) => selectUser(state));
+  const user: Partial<IUser> = useMemo(
+    () => ({
+      email: userData.email ?? '',
+      name: userData.name ?? ''
+    }),
+    [userData]
+  );
 
   const handleUserLogout = async () => {
     await dispatch(logoutUser() as any);
     navigate('/dashboard');
   };
 
-  const userData = useSelector((state: RootState) => selectUser(state));
-  user['email'] = userData.email ?? '';
-  user['name'] = userData.name;
-
-  const userNavigation = [
-    {
-      name: 'Test Refresh token',
-      onclick: async () => {
-        await dispatch(getRefreshToken() as any);
-      }
-    },
-    { name: 'Sign out', onclick: () => handleUserLogout() }
-  ];
+  const userNavigation: IUserNavigationItem[] = useMemo(
+    () => [
+      {
+        name: 'Test Refresh token',
+        onclick: async () => {
+          await dispatch(getRefreshToken());
+        }
+      },
+      { name: 'Sign out', onclick: handleUserLogout }
+    ],
+    [dispatch, handleUserLogout]
+  );
 
   return (
     <>
@@ -168,7 +176,6 @@ export const DashboardLayout = (props: Props) => {
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
-                  {/* <BellIcon aria-hidden="true" className="size-6" /> */}
                 </button>
               </div>
               <div className="mt-3 space-y-1 px-2">

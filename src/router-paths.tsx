@@ -13,7 +13,6 @@ import {
 import { Library } from './components/view/Library';
 import { Products } from './components/view/Products';
 import { isTokenValid } from './config/helpers';
-import { useDispatch } from 'react-redux';
 import { getRefreshToken } from './app/features/auth/authThunks';
 import { store } from './app/store/redux-store';
 
