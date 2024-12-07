@@ -10,6 +10,20 @@ interface ActionModalProps {
   onClose: () => void;
 }
 
+const icons: { [key: string]: string } = {
+  error: '❌',
+  warning: '⚠️',
+  success: '✅',
+  delete: '🗑️'
+};
+
+const colors: { [key: string]: string } = {
+  error: 'bg-red-100 text-red-600 border-red-400',
+  warning: 'bg-yellow-100 text-yellow-600 border-yellow-400',
+  success: 'bg-green-100 text-green-600 border-green-400',
+  delete: 'bg-gray-100 text-gray-600 border-gray-400'
+};
+
 const ActionModal: React.FC<ActionModalProps> = ({
   isOpen,
   errorType,
@@ -20,20 +34,6 @@ const ActionModal: React.FC<ActionModalProps> = ({
   onClose
 }) => {
   if (!isOpen) return null;
-
-  const icons = {
-    error: '❌',
-    warning: '⚠️',
-    success: '✅',
-    delete: '🗑️'
-  };
-
-  const colors = {
-    error: 'bg-red-100 text-red-600 border-red-400',
-    warning: 'bg-yellow-100 text-yellow-600 border-yellow-400',
-    success: 'bg-green-100 text-green-600 border-green-400',
-    delete: 'bg-gray-100 text-gray-600 border-gray-400'
-  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

@@ -12,7 +12,7 @@ type Props = {
   type: 'MAIN' | 'MOBILE';
 };
 
-const navigation = [
+const navigation: { name: string; href: string }[] = [
   { name: 'Dashboard', href: GetDashboardRoute() },
   { name: 'Employees', href: GetEmployeesRoute() },
   { name: 'Library', href: GetLibraryRoute() },
@@ -47,8 +47,6 @@ export const MainNavigation = (props: Props) => {
         ) : (
           <DisclosureButton
             key={item.name}
-            // as="a"
-            // href={item.href}
             onClick={() => navigate(item.href)}
             aria-current={pathname === item.href ? 'page' : undefined}
             className={classNames(

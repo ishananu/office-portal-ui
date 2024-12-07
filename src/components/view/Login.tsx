@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthLoading } from '../../app/features/auth/authSelectors';
 import { loginUser } from '../../app/features/auth/authThunks';
-import { RootState } from '../../app/store/redux-store';
+import { AppDispatch, RootState } from '../../app/store/redux-store';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
+interface IFormErrors {
+  email?: string;
+  password?: string;
+}
+
 export const Login: React.FC<Props> = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {}
-  );
-  const dispatch = useDispatch();
+  const [errors, setErrors] = useState<IFormErrors>({});
+  const dispatch = useDispatch<AppDispatch>();
   const isLoading = useSelector((state: RootState) => selectAuthLoading(state));
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    const errors: { email?: string; password?: string } = {};
+  const validateForm = useCallback(() => {
+    const errors: IFormErrors = {};
     if (!email) errors.email = 'Email is required.';
     else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email))
       errors.email = 'Invalid email format.';
@@ -26,16 +29,19 @@ export const Login: React.FC<Props> = () => {
     else if (password.length < 6)
       errors.password = 'Password must be at least 6 characters.';
     return errors;
-  };
+  }, [email, password]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length > 0) return;
-    await dispatch(loginUser({ email, password }) as any);
-    navigate('/dashboard');
-  };
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const validationErrors: IFormErrors = validateForm();
+      setErrors(validationErrors);
+      if (Object.keys(validationErrors).length > 0) return;
+      await dispatch(loginUser({ email, password }) as any);
+      navigate('/dashboard');
+    },
+    [email, password, dispatch, navigate]
+  );
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

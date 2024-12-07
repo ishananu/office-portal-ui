@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
 import {
   Disclosure,
@@ -27,7 +27,7 @@ interface IUserNavigationItem {
   onclick: () => Promise<void>;
 }
 
-export const DashboardLayout: FC<Props> = () => {
+export const DashboardLayout: React.FC<Props> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate: NavigateFunction = useNavigate();
 

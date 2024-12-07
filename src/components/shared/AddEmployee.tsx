@@ -26,11 +26,10 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
     setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
-  const handleOnClose = () => {
+  const handleOnClose = (): void => {
     setFormData({ name: '', email: '', img: '' });
     onClose();
   };

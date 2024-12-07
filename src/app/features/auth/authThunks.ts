@@ -17,6 +17,7 @@ export const loginUser = createAsyncThunk(
         path: '/'
       });
     } catch (error: any) {
+      console.error('Login failed:', error.message);
       dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
       throw error;
     }

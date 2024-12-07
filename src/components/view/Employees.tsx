@@ -17,7 +17,7 @@ import { DEFAULT_ROW_COUNT } from '../../config/const';
 import { setUserTotal } from '../../app/features/users/userSlice';
 
 export const Employees = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch<AppDispatch>();
   const users = useSelector((state: RootState) => state.users.list);
   const usersTotal = useSelector((state: RootState) => state.users.total);
 

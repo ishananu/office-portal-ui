@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { FaSave, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
 import { IUser } from '../../app/type';
 
@@ -12,7 +12,7 @@ interface ActionButtonsProps {
   handleDeleteClick: (person: Partial<IUser>) => void;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({
+const ActionButtons: FC<ActionButtonsProps> = ({
   person,
   editingUserId,
   errors,

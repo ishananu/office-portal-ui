@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface PaginationProps {
-  totalPages: number; // Total number of pages
-  currentPage: number; // Currently selected page
-  onPageChange: (page: number) => void; // Callback when the page is changed
-  itemsPerPageText?: string; // Optional text to show items per page
-  totalItems?: number; // Optional: Total number of items
+  totalPages: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  itemsPerPageText?: string;
+  totalItems?: number;
 }
 
 const TablePagination: React.FC<PaginationProps> = ({
@@ -24,8 +24,8 @@ const TablePagination: React.FC<PaginationProps> = ({
     }
   };
 
-  const renderPageNumbers = () => {
-    const pages = [];
+  const renderPageNumbers = (): ReactNode[] => {
+    const pages: ReactNode[] = [];
     for (let i = 1; i <= totalPages; i++) {
       pages.push(
         <li key={i}>
