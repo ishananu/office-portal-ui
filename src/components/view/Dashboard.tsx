@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { MainContent } from '../layout/MainContent';
+import LanguageSwitcher from '../shared/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 type Props = {};
 
 export const Dashboard = (props: Props) => {
+  const [t] = useTranslation();
   return (
     <MainContent title="Dashboard">
       <section>
@@ -16,11 +19,13 @@ export const Dashboard = (props: Props) => {
                 alt=""
                 className="inline-block h-16 w-16 object-cover rounded-full "
               />
-              <h3 className="text-xl font-semibold">Employees</h3>
+              <h3 className="text-xl font-semibold">HElloo</h3>
               <p className="text-sm text-gray-500">
-                Lorem ipsum dolor sit amet consectetur adipiscing elit ut
-                aliquam, purus sit.
+                {t('navigation.dashboard')} Lorem ipsum dolor sit amet
+                consectetur adipiscing elit ut aliquam, purus sit.
               </p>
+
+              <LanguageSwitcher />
             </div>
             {/* Features Item */}
             <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">

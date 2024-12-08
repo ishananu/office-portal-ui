@@ -4,6 +4,7 @@ import usersReducer from '../features/users/userSlice';
 import productsReducer from '../features/products/productSlice';
 import booksReducer from '../features/books/bookSlice';
 import toastReducer from '../features/toast/toastSlice';
+import localizationReducer from '../features/localization/localizationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     users: usersReducer,
     products: productsReducer,
     books: booksReducer,
-    toast: toastReducer
+    toast: toastReducer,
+    localization: localizationReducer
   }
 });
 

@@ -1,7 +1,7 @@
 import { createBrowserRouter, redirect } from 'react-router-dom';
 import { Login } from './components/view/Login';
 import { Employees } from './components/view/Employees';
-import ErrorPage from './components/view/Error';
+import { ErrorPage } from './components/view/Error';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Dashboard } from './components/view/Dashboard';
 import {
