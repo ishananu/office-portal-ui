@@ -1,10 +1,10 @@
-interface IDashabordRoutes {
+interface IDashboardRoutes {
   dashboard: string;
   employees: string;
   library: string;
   products: string;
 }
-const routes: IDashabordRoutes = {
+const routes: IDashboardRoutes = {
   dashboard: '/dashboard',
   employees: '/employees',
   library: '/library',

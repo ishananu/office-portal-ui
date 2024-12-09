@@ -14,16 +14,20 @@ const LanguageSwitcher: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-row justify-end">
       <button
         onClick={() => handleLanguageChange('en')}
-        disabled={language === 'en'}
+        className={`block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:text-white ${
+          language === 'en' ? 'bg-gray-700' : ''
+        }`}
       >
         English
       </button>
       <button
         onClick={() => handleLanguageChange('fr')}
-        disabled={language === 'fr'}
+        className={`block rounded-md px-3 py-2 text-base font-medium text-gray-400  hover:text-white ${
+          language === 'fr' ? 'bg-gray-700' : ''
+        }`}
       >
         French
       </button>

@@ -5,7 +5,7 @@ interface LocalizationState {
 }
 
 const initialState: LocalizationState = {
-  language: 'fr'
+  language: 'en'
 };
 
 const localizationSlice = createSlice({

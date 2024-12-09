@@ -8,6 +8,20 @@ export const En: Local = {
       employees: 'Employees',
       library: 'Library',
       products: 'Products'
+    },
+    employees: {
+      table: {
+        name: 'Name',
+        email: 'Email',
+        createdAt: 'Created At'
+      },
+      action: {
+        edit: 'Edit',
+        delete: 'Delete',
+        save: 'Save',
+        cancel: 'Cancel',
+        addEmployee: 'Add Employee'
+      }
     }
   }
 };

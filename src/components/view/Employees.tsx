@@ -15,6 +15,8 @@ import ActionButtons from '../shared/ActionButtons';
 import TablePagination from '../shared/TablePagination';
 import { DEFAULT_ROW_COUNT } from '../../config/const';
 import { setUserTotal } from '../../app/features/users/userSlice';
+import { useTranslation } from 'react-i18next';
+import { UserIcon } from '../shared/UserIcon';
 
 const formatDate = (dateString: string): string | undefined => {
   if (!dateString) return;
@@ -40,6 +42,7 @@ export const Employees = () => {
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [t] = useTranslation();
 
   const handleOpenModal = (): void => {
     setModalOpen(true);
@@ -116,7 +119,7 @@ export const Employees = () => {
   }, [dispatch]);
 
   return (
-    <MainContent title="Employees">
+    <MainContent title={t('navigation.employees')}>
       <AddUserModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -168,7 +171,7 @@ export const Employees = () => {
           onClick={handleOpenModal}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm mb-4"
         >
-          Add Employee
+          {t('employees.action.addEmployee')}
         </button>
       </div>
 
@@ -178,17 +181,17 @@ export const Employees = () => {
             <tr>
               <th className="p-4 border-b border-slate-300 bg-slate-50">
                 <p className="block text-sm font-normal leading-none text-slate-500">
-                  Name
+                  {t('employees.table.name')}
                 </p>
               </th>
               <th className="p-4 border-b border-slate-300 bg-slate-50">
                 <p className="block text-sm font-normal leading-none text-slate-500">
-                  Email
+                  {t('employees.table.email')}
                 </p>
               </th>
               <th className="p-4 border-b border-slate-300 bg-slate-50">
                 <p className="block text-sm font-normal leading-none text-slate-500">
-                  Created at
+                  {t('employees.table.createdAt')}
                 </p>
               </th>
               <th className="p-4 border-b border-slate-300 bg-slate-50">
@@ -206,25 +209,10 @@ export const Employees = () => {
                 <tr className="hover:bg-slate-50" key={`p-${person.email}`}>
                   <td className="p-4 border-b border-slate-200 flex">
                     <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                      {person.img ? (
-                        <img
-                          src={`/assets/${person.img}.png`}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <svg
-                          className="absolute w-12 h-12 text-gray-400 -left-1"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      )}
+                      <UserIcon
+                        img={person.img!}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
                     </div>
 
                     <div className="ml-3">

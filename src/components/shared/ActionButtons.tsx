@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { FaSave, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
 import { IUser } from '../../app/type';
+import { useTranslation } from 'react-i18next';
 
 interface ActionButtonsProps {
   person: Partial<IUser>;
@@ -22,6 +23,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   handleDeleteClick
 }) => {
   const isEditing = editingUserId === person._id;
+  const [t] = useTranslation();
 
   return (
     <div className="flex items-center space-x-4">
@@ -37,7 +39,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             }`}
             disabled={Boolean(errors.name || errors.email)}
           >
-            <FaSave className="mr-1" /> Save
+            <FaSave className="mr-1" /> {t('employees.action.save')}
           </button>
 
           {/* Cancel Button */}
@@ -45,7 +47,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             onClick={handleCancelClick}
             className="flex items-center text-sm font-semibold text-red-500 hover:text-red-600"
           >
-            <FaTimes className="mr-1" /> Cancel
+            <FaTimes className="mr-1" /> {t('employees.action.cancel')}
           </button>
         </>
       ) : (
@@ -55,7 +57,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             onClick={() => handleEditClick(person)}
             className="flex items-center text-sm font-semibold text-blue-500 hover:text-blue-600"
           >
-            <FaEdit className="mr-1" /> Edit
+            <FaEdit className="mr-1" /> {t('employees.action.edit')}
           </button>
 
           {/* Delete Button */}
@@ -63,7 +65,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             onClick={() => handleDeleteClick(person)}
             className="flex items-center text-sm font-semibold text-red-500 hover:text-red-600"
           >
-            <FaTrash className="mr-1" /> Delete
+            <FaTrash className="mr-1" /> {t('employees.action.delete')}
           </button>
         </>
       )}

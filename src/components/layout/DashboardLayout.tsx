@@ -19,6 +19,8 @@ import {
 import { AppDispatch, RootState } from '../../app/store/redux-store';
 import { selectUser } from '../../app/features/users/userSelectors';
 import { IUser } from '../../app/type';
+import LanguageSwitcher from '../shared/LanguageSwitcher';
+import { UserIcon } from '../shared/UserIcon';
 
 interface Props {}
 
@@ -83,41 +85,15 @@ export const DashboardLayout: React.FC<Props> = () => {
               </div>
               <div className="hidden md:block">
                 <div className="ml-4 flex items-center md:ml-6">
-                  <p className="text-gray-300">{userData.name}</p>
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                  </button>
-
+                  <LanguageSwitcher />
+                  <p className="text-gray-300 ml-6">{userData.name}</p>
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
-                        <span className="sr-only">Open user menu</span>
 
-                        {userData.img ? (
-                          <img
-                            src={`/assets/${userData.img}.png`}
-                            className="size-8 rounded-full"
-                          />
-                        ) : (
-                          <svg
-                            className="absolute size-8 rounded-full text-gray-400 -left-1"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                              clipRule="evenodd"
-                            ></path>
-                          </svg>
-                        )}
+                        <UserIcon img={userData.img} />
                       </MenuButton>
                     </div>
                     <MenuItems
@@ -142,7 +118,6 @@ export const DashboardLayout: React.FC<Props> = () => {
                 {/* Mobile menu button */}
                 <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
                   <Bars3Icon
                     aria-hidden="true"
                     className="block size-6 group-data-[open]:hidden"
@@ -161,25 +136,21 @@ export const DashboardLayout: React.FC<Props> = () => {
               <MainNavigation type="MOBILE" />
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
-              <div className="flex items-center px-5">
-                <div className="shrink-0">
-                  <img alt="" src={user.img} className="size-10 rounded-full" />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base/5 font-medium text-white">
-                    {user.name}
+              <div className="flex items-center px-5 justify-between">
+                <div className="flex">
+                  <div className="shrink-0">
+                    <UserIcon img={userData.img} />
                   </div>
-                  <div className="text-sm font-medium text-gray-400">
-                    {user.email}
+                  <div className="ml-3">
+                    <div className="text-base/5 font-medium text-white">
+                      {user.name}
+                    </div>
+                    <div className="text-sm font-medium text-gray-400">
+                      {user.email}
+                    </div>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                </button>
+                <LanguageSwitcher />
               </div>
               <div className="mt-3 space-y-1 px-2">
                 {userNavigation.map((item) => (

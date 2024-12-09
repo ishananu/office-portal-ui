@@ -7,17 +7,11 @@ import {
 } from '../../routes/user/router';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { DisclosureButton } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   type: 'MAIN' | 'MOBILE';
 };
-
-const navigation: { name: string; href: string }[] = [
-  { name: 'Dashboard', href: GetDashboardRoute() },
-  { name: 'Employees', href: GetEmployeesRoute() },
-  { name: 'Library', href: GetLibraryRoute() },
-  { name: 'Products', href: GetProductsRoute() }
-];
 
 const classNames = (...classes: string[]): string => {
   return classes.filter(Boolean).join(' ');
@@ -27,6 +21,18 @@ export const MainNavigation = (props: Props) => {
   const location = useLocation();
   const { pathname } = location;
   const navigate = useNavigate();
+  const [t] = useTranslation();
+
+  const navigation: { name: string; href: string }[] = React.useMemo(
+    () => [
+      { name: t('navigation.dashboard'), href: GetDashboardRoute() },
+      { name: t('navigation.employees'), href: GetEmployeesRoute() },
+      { name: t('navigation.library'), href: GetLibraryRoute() },
+      { name: t('navigation.products'), href: GetProductsRoute() }
+    ],
+    [t]
+  );
+
   return (
     <>
       {navigation.map((item) => {
