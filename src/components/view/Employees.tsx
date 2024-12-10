@@ -212,6 +212,7 @@ export const Employees = () => {
                       <UserIcon
                         img={person.img!}
                         className="w-full h-full object-cover rounded-lg"
+                        propic={false}
                       />
                     </div>
 

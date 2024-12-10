@@ -25,6 +25,9 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.loading = false;
     },
+    rgisterSuccess(state) {
+      state.loading = false;
+    },
     loginFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
@@ -36,7 +39,12 @@ const authSlice = createSlice({
   }
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout } =
-  authSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  rgisterSuccess
+} = authSlice.actions;
 
 export default authSlice.reducer;

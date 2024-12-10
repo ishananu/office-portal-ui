@@ -4,11 +4,21 @@ interface IDashboardRoutes {
   library: string;
   products: string;
 }
-const routes: IDashboardRoutes = {
+
+interface IPublicRoutes {
+  signup: string;
+}
+const dashboardRoutes: IDashboardRoutes = {
   dashboard: '/dashboard',
   employees: '/employees',
   library: '/library',
   products: '/products'
 };
+
+const publicRoutes: IPublicRoutes = {
+  signup: '/signup'
+};
+
+const routes = { ...dashboardRoutes, ...publicRoutes };
 
 export default routes;

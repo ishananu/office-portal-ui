@@ -1,7 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { loginStart, loginSuccess, loginFailure, logout } from './authSlice';
-import { userLogin, userLogOut, refreshToken } from '../../../dalc/auth';
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  rgisterSuccess
+} from './authSlice';
+import {
+  userLogin,
+  userLogOut,
+  refreshToken,
+  userRegister
+} from '../../../dalc/auth';
 import Cookies from 'js-cookie';
+import { IUser } from '../../type';
+import { addToast } from '../toast/toastSlice';
 
 // Async thunk for login
 export const loginUser = createAsyncThunk(
@@ -19,6 +32,29 @@ export const loginUser = createAsyncThunk(
     } catch (error: any) {
       console.error('Login failed:', error.message);
       dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
+      throw error;
+    }
+  }
+);
+
+// Async thunk for register
+export const resgiterUser = createAsyncThunk(
+  'auth/registerUser',
+  async (credentials: Partial<IUser>, { dispatch }) => {
+    try {
+      dispatch(loginStart());
+      await userRegister(credentials);
+      dispatch(rgisterSuccess());
+      addToast({
+        type: 'success',
+        message: 'User registered successfully, please signin',
+        duration: 5000
+      });
+    } catch (error: any) {
+      console.error('Resgiter failed:', error.message);
+      dispatch(
+        loginFailure(error.response?.data?.message || 'Resgiter failed')
+      );
       throw error;
     }
   }

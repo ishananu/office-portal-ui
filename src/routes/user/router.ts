@@ -16,9 +16,14 @@ const GetProductsRoute = () => {
   return routes.products;
 };
 
+const GetSignupRoute = () => {
+  return routes.signup;
+};
+
 export {
   GetDashboardRoute,
   GetEmployeesRoute,
   GetLibraryRoute,
-  GetProductsRoute
+  GetProductsRoute,
+  GetSignupRoute
 };

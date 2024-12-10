@@ -42,7 +42,7 @@ export const DashboardLayout: React.FC<Props> = () => {
     [userData]
   );
 
-  const handleUserLogout = async () => {
+  const handleUserLogout = async (): Promise<void> => {
     await dispatch(logoutUser() as any);
     navigate('/dashboard');
   };
